@@ -1,5 +1,4 @@
 import HeroContent from './HeroContent';
-import './Hero.css';
 
 const Hero = () => {
     return (

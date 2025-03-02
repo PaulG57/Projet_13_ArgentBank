@@ -1,11 +1,12 @@
+import LoginForm from "../components/LoginForm";
+import "../styles/login.css";
+
 const Login = () => {
-    return (
-      <div>
-        <h1>Connexion</h1>
-        <p>Veuillez entrer vos identifiants.</p>
-      </div>
-    );
-  };
-  
-  export default Login;
-  
+  return (
+    <main className="main bg-dark">
+      <LoginForm />
+    </main>
+  );
+};
+
+export default Login;

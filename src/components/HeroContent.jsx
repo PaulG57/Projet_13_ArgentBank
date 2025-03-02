@@ -1,5 +1,3 @@
-import './HeroContent.css';
-
 const HeroContent = () => {
     return (
         <section className="hero-content">

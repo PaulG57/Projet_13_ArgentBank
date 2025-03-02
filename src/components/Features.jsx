@@ -2,7 +2,6 @@ import FeatureItem from "./FeatureItem";
 import chatIcon from "../assets/icon-chat.png";
 import moneyIcon from "../assets/icon-money.png";
 import securityIcon from "../assets/icon-security.png";
-import "./Features.css";
 
 const featuresData = [
   {
