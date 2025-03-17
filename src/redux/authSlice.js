@@ -1,26 +1,46 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+// Récupération du token depuis le storage
+const tokenFromLocal = localStorage.getItem("token");
+const tokenFromSession = sessionStorage.getItem("token");
+const token = tokenFromLocal || tokenFromSession;
+const rememberMe = !!tokenFromLocal;
+
 const initialState = {
-  email: "",
-  password: "",
-  isAuthenticated: false, // Pour savoir si l'utilisateur est connecté
+  isAuthenticated: token ? true : false,
+  token: token,
+  user: null,
+  rememberMe: rememberMe,
 };
 
 const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setEmail: (state, action) => {
-      state.email = action.payload;
+    setAuth: (state, action) => {
+      state.isAuthenticated = true;
+      state.token = action.payload.token;
+      state.user = action.payload.user;
+      state.rememberMe = action.payload.rememberMe;
+      // Stocker le token dans le bon storage en fonction de rememberMe
+      if (action.payload.rememberMe) {
+        localStorage.setItem("token", action.payload.token);
+        sessionStorage.removeItem("token");
+      } else {
+        sessionStorage.setItem("token", action.payload.token);
+        localStorage.removeItem("token");
+      }
     },
-    setPassword: (state, action) => {
-      state.password = action.payload;
-    },
-    login: (state) => {
-      state.isAuthenticated = true; // On simule une connexion réussie
+    logout: (state) => {
+      state.isAuthenticated = false;
+      state.token = null;
+      state.user = null;
+      state.rememberMe = false;
+      localStorage.removeItem("token");
+      sessionStorage.removeItem("token");
     },
   },
 });
 
-export const { setEmail, setPassword, login } = authSlice.actions;
+export const { setAuth, logout } = authSlice.actions;
 export default authSlice.reducer;
