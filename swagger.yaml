@@ -1,0 +1,148 @@
+swagger: '2.0'
+info:
+  title: Bank Argent API documentation
+  description: |
+    API for managing user transactions.
+  version: 1.0.0
+host: localhost:3001
+basePath: /api/v1
+schemes:
+  - http
+paths:
+  /user/transactions:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - User Module - Transactions
+      summary: Retrieve transactions for the current month
+      description: Returns the list of transactions for the current month.
+      parameters:
+        - name: month
+          in: query
+          description: Month filter (YYYY-MM). Defaults to current month.
+          required: false
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Transactions retrieved successfully.
+          schema:
+            $ref: '#/definitions/TransactionsResponse'
+        '401':
+          description: Unauthorized - invalid or expired token.
+        '500':
+          description: Internal Server Error.
+  /user/transactions/{transactionId}:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - User Module - Transactions
+      summary: Retrieve transaction details
+      description: Returns detailed information for a specific transaction.
+      parameters:
+        - name: transactionId
+          in: path
+          description: Unique identifier of the transaction.
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Transaction details retrieved successfully.
+          schema:
+            $ref: '#/definitions/Transaction'
+        '401':
+          description: Unauthorized - invalid or expired token.
+        '404':
+          description: Transaction not found.
+        '500':
+          description: Internal Server Error.
+    put:
+      security:
+        - Bearer: []
+      tags:
+        - User Module - Transactions
+      summary: Update additional information of a transaction
+      description: Updates the additional information for an existing transaction.
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: transactionId
+          in: path
+          description: Unique identifier of the transaction to update.
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: Object containing the fields to update (category and note).
+          required: true
+          schema:
+            $ref: '#/definitions/TransactionUpdate'
+      responses:
+        '200':
+          description: Transaction updated successfully.
+          schema:
+            $ref: '#/definitions/Transaction'
+        '400':
+          description: Invalid data provided.
+        '401':
+          description: Unauthorized - invalid or expired token.
+        '404':
+          description: Transaction not found.
+        '500':
+          description: Internal Server Error.
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
+definitions:
+  Transaction:
+    type: object
+    properties:
+      id:
+        type: string
+        description: Unique identifier of the transaction.
+      date:
+        type: string
+        format: date-time
+        description: Date and time of the transaction.
+      description:
+        type: string
+        description: Brief description of the transaction.
+      amount:
+        type: number
+        format: double
+        description: Transaction amount.
+      transactionType:
+        type: string
+        description: Transaction type (read-only).
+      category:
+        type: string
+        description: Transaction category (modifiable).
+      note:
+        type: string
+        description: Additional notes (modifiable).
+  TransactionUpdate:
+    type: object
+    description: Object for updating the additional information of a transaction.
+    properties:
+      category:
+        type: string
+        description: New category value (or empty string to remove).
+      note:
+        type: string
+        description: New note value (or empty string to remove).
+  TransactionsResponse:
+    type: object
+    properties:
+      transactions:
+        type: array
+        items:
+          $ref: '#/definitions/Transaction'
