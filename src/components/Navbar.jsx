@@ -24,7 +24,7 @@ const Navbar = () => {
           <>
             <Link className="main-nav-item" to="/profile">
               <i className="fa fa-user-circle"></i>{" "}
-              {profileData?.body?.firstName || "User"}
+              {profileData?.body?.firstName}
             </Link>
             <Link className="main-nav-item" to="/" onClick={() => dispatch(logout())}>
               <i className="fa fa-sign-out"></i> Sign Out

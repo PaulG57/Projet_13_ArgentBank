@@ -1,8 +1,7 @@
 swagger: '2.0'
 info:
   title: Bank Argent API documentation
-  description: |
-    API for managing user transactions.
+  description: API for managing user transactions.
   version: 1.0.0
 host: localhost:3001
 basePath: /api/v1

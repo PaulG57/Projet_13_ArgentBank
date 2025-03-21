@@ -9,7 +9,6 @@ const rememberMe = !!tokenFromLocal;
 const initialState = {
   isAuthenticated: token ? true : false,
   token: token,
-  user: null,
   rememberMe: rememberMe,
 };
 
@@ -20,7 +19,6 @@ const authSlice = createSlice({
     setAuth: (state, action) => {
       state.isAuthenticated = true;
       state.token = action.payload.token;
-      state.user = action.payload.user;
       state.rememberMe = action.payload.rememberMe;
       // Stocker le token dans le bon storage en fonction de rememberMe
       if (action.payload.rememberMe) {
@@ -34,7 +32,6 @@ const authSlice = createSlice({
     logout: (state) => {
       state.isAuthenticated = false;
       state.token = null;
-      state.user = null;
       state.rememberMe = false;
       localStorage.removeItem("token");
       sessionStorage.removeItem("token");
