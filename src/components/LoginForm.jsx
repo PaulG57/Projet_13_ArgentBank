@@ -17,11 +17,11 @@ const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMessage("");
-    const result = await loginUser({ email, password });
+    const result = await loginUser({ email, password }); // Appelle l'API pour se connecter avec l'email et le mot de passe
     
     if (result.error) {
       setErrorMessage("Invalid email or password");
-    } else if (result.data?.body?.token) {
+    } else if (result.data?.body?.token) { // Si le login réussit envoie le token et la valeur rememberMe à Redux
       dispatch(setAuth({ token: result.data.body.token, rememberMe }));
       navigate("/profile");
     }
